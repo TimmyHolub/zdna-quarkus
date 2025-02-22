@@ -1,19 +1,18 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "awlawdhecomin";
-option java_outer_classname = "HelloGrpcProto";
-
 package hello;
 
-service HelloGrpc {
-    rpc SayHello (HelloRequest) returns (HelloReply) {}
-}
+option java_package = "cz.mendelu.dnaAnalyser.grpc.hello";
+option java_multiple_files = true;
 
 message HelloRequest {
-    string name = 1;
+  string message = 1;
 }
 
 message HelloReply {
-    string message = 1;
+  string message = 1;
+}
+
+service HelloService {
+  rpc exchangeMessage(HelloRequest) returns (HelloReply);
 }
