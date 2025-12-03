@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'io.quarkus'
+    id 'io.quarkus' version '3.24.5'
 }
 
 repositories {
@@ -17,6 +17,9 @@ dependencies {
     implementation 'io.quarkus:quarkus-smallrye-openapi'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 
 group 'awlawdhecomin'
