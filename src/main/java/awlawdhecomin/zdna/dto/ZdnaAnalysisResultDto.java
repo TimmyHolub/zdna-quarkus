@@ -1,11 +1,11 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.zdna.dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class ZdnaAnalyseResult {
+public class ZdnaAnalysisResultDto {
     private Long id;
 
     private int position;

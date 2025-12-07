@@ -1,4 +1,6 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.common.sequence.stream;
+
+import awlawdhecomin.common.sequence.nucleotide.Nucleotide;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -6,37 +8,43 @@ import java.util.function.ToDoubleBiFunction;
 import java.util.stream.DoubleStream;
 
 /**
- * The Window represents a part of DNA/RNA sequences, witch are currently analysed.
- * <p>
+ * The Window represents a part of DNA/RNA sequences, which are currently analyzed.
  *
  * <pre>
  *     Data: ACTGTGGTGTTTTGGTGTGTGGCCCGCAAATTTVVTGGG
  *                   |     |
  *     Window:       GTTTTGG
- *                   |>   <| size = 7
+ *                   |&gt;   &lt;| size = 7
  *                   |
  *                   postition = 8
  * </pre>
+ *
+ * @author Ing. Jan Kolomazník, Ph.D.
  */
 public interface Window {
 
     /**
      * This method returns the size of the Window.
      * The size is the number of nucleotides which the Windows contains.
+     *
      * @return Window size as a non-negative number.
      */
     int getSize();
 
     /**
      * Get the absolute position in the sequence.
+     *
      * @return The position of the first nucleotide in the Sequence starting from <code>0</code>.
      */
     int getPosition();
 
     /**
-     * Get the nucleotide from a specific position inside the Window.
-     * @param index has to be inside the Window.
+     * Get the nucleotide from a specific position inside of the Window.
+     * <p>
+     * <i>If you need to go through all the nucletides in the Window, it is more efficient to use the methods {@link #forEach(Consumer)} or {@link #forEach(BiConsumer)}</i>
+     * </p>
      *
+     * @param index has to be inside the Window.
      * @return The nucleotides of the index.
      */
     Nucleotide get(int index);
@@ -52,18 +60,21 @@ public interface Window {
 
     /**
      * This method iterates over the whole Window nucleotide by nucleotide.
+     *
      * @param consumer which processes each nucleotide.
      */
     void forEach(Consumer<Nucleotide> consumer);
 
     /**
      * This method iterates over the whole Window of nucleotides with indexes one by one.
+     *
      * @param biConsumer which processes data getting index and nucleotide.
      */
     void forEach(BiConsumer<Integer, Nucleotide> biConsumer);
 
     /**
      * This method transforms the Window to the stream of doubles.
+     *
      * @param function that transfers a nucleotide to a double.
      * @return The {@link DoubleStream}
      */
@@ -71,7 +82,8 @@ public interface Window {
 
     /**
      * Get a sub-window from the Window by the position (start) and the offset.
-     * @param start is a number inside the Window.
+     *
+     * @param start  is a number inside of the Window.
      * @param offset is the size of the new Window.
      * @return sub-window
      */

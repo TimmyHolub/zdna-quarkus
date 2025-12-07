@@ -1,8 +1,8 @@
 package awlawdhecomin.grpc.server;
 
-import awlawdhecomin.analyse.shared.data.ZdnaAnalyseResult;
-import awlawdhecomin.analyse.shared.data.ZdnaAnalysisInputDto;
-import awlawdhecomin.analyse.zdna.ZdnaAnalyser;
+import awlawdhecomin.zdna.ZdnaAnalyser;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisInputDto;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisResultDto;
 import com.google.protobuf.Int64Value;
 import cz.mendelu.dnaAnalyser.grpc.analysisStreaming.*;
 import io.grpc.Status;
@@ -52,7 +52,7 @@ public class ZdnaAnalysiStreamingServiceImpl implements ZdnaAnalysisService {
                     .at(config.getAt())
                     .build();
 
-            List<ZdnaAnalyseResult> domainResults = zdnaAnalyser.getResults(inputDto);
+            List<ZdnaAnalysisResultDto> domainResults = zdnaAnalyser.getResults(inputDto);
 
             List<ZdnaAnalysisResult> protoResults = domainResults.stream()
                     .map(this::toZdnaAnalysisResult)
@@ -66,17 +66,17 @@ public class ZdnaAnalysiStreamingServiceImpl implements ZdnaAnalysisService {
         });
     }
 
-    private ZdnaAnalysisResult toZdnaAnalysisResult(ZdnaAnalyseResult zdnaAnalyseResult) {
+    private ZdnaAnalysisResult toZdnaAnalysisResult(ZdnaAnalysisResultDto zdnaAnalysisResultDto) {
         ZdnaAnalysisResult.Builder builder = ZdnaAnalysisResult.newBuilder()
-                .setPosition(zdnaAnalyseResult.getPosition())
-                .setLength(zdnaAnalyseResult.getLength())
-                .setSequence(zdnaAnalyseResult.getSequence())
-                .setZdnaGCRichness(zdnaAnalyseResult.getZdnaGCRichness())
-                .setZdnaGTRichness(zdnaAnalyseResult.getZdnaGTRichness())
-                .setScore(zdnaAnalyseResult.getScore())
-                .setScorePerc(zdnaAnalyseResult.getScorePerc());
+                .setPosition(zdnaAnalysisResultDto.getPosition())
+                .setLength(zdnaAnalysisResultDto.getLength())
+                .setSequence(zdnaAnalysisResultDto.getSequence())
+                .setZdnaGCRichness(zdnaAnalysisResultDto.getZdnaGCRichness())
+                .setZdnaGTRichness(zdnaAnalysisResultDto.getZdnaGTRichness())
+                .setScore(zdnaAnalysisResultDto.getScore())
+                .setScorePerc(zdnaAnalysisResultDto.getScorePerc());
 
-        Long id = zdnaAnalyseResult.getId();
+        Long id = zdnaAnalysisResultDto.getId();
         if (id != null) {
             builder.setId(Int64Value.of(id));
         }

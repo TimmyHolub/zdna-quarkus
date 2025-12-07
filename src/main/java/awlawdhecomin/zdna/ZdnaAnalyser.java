@@ -1,6 +1,10 @@
-package awlawdhecomin.analyse.zdna;
+package awlawdhecomin.zdna;
 
-import awlawdhecomin.analyse.shared.data.*;
+import awlawdhecomin.common.sequence.nucleotide.Nucleotide;
+import awlawdhecomin.common.sequence.stream.BufferedWindow;
+import awlawdhecomin.common.sequence.stream.Window;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisInputDto;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisResultDto;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.ArrayList;
@@ -15,7 +19,7 @@ public class ZdnaAnalyser {
     private static final Pattern PATTERN_GC = Pattern.compile("(?=(GC|CG))");
     private static final Pattern PATTERN_GT = Pattern.compile("(?=(GT|TG))");
 
-    public List<ZdnaAnalyseResult> getResults(ZdnaAnalysisInputDto inputDto) {
+    public List<ZdnaAnalysisResultDto> getResults(ZdnaAnalysisInputDto inputDto) {
         // Prepare sequence window
         Window sequenceWindow = BufferedWindow.wrap(inputDto.getSequenceDataPlain());
 
@@ -27,7 +31,7 @@ public class ZdnaAnalyser {
 
         Map<NucleotidePair, Float> subscoreMap = createSubscoreMapping(gcScore, gtAcScore, atScore);
 
-        List<ZdnaAnalyseResult> results = new ArrayList<>();
+        List<ZdnaAnalysisResultDto> results = new ArrayList<>();
 
         int i = 0;
         int len = 1;
@@ -48,7 +52,7 @@ public class ZdnaAnalyser {
             } else {
                 if (len >= inputDto.getMinSequenceSize()) {
                     float kvScore = score / 2;
-                    float maxPossibleScore = ((len-1) * Math.max(gcScore, Math.max(gtAcScore, atScore))) / 2;
+                    float maxPossibleScore = ((len - 1) * Math.max(gcScore, Math.max(gtAcScore, atScore))) / 2;
                     float scorePerc = (kvScore / maxPossibleScore) * 100;
 
                     if (scorePerc >= inputDto.getThreshold()) {
@@ -66,7 +70,7 @@ public class ZdnaAnalyser {
                         double countGT = PATTERN_GT.matcher(seq).results().count();
                         double richnessGT = countGT / pcLen * 100;
 
-                        ZdnaAnalyseResult result = ZdnaAnalyseResult.builder()
+                        ZdnaAnalysisResultDto result = ZdnaAnalysisResultDto.builder()
                                 .id(null)
                                 .position(start)
                                 .length(len)
@@ -90,8 +94,6 @@ public class ZdnaAnalyser {
         return results;
     }
 
-    private record NucleotidePair(Nucleotide first, Nucleotide second) {}
-
     private Map<NucleotidePair, Float> createSubscoreMapping(
             float gcScore,
             float gtAcScore,
@@ -110,5 +112,8 @@ public class ZdnaAnalyser {
         subscoreMap.put(new NucleotidePair(Nucleotide.A, Nucleotide.T), atScore);
         subscoreMap.put(new NucleotidePair(Nucleotide.T, Nucleotide.A), atScore);
         return subscoreMap;
+    }
+
+    private record NucleotidePair(Nucleotide first, Nucleotide second) {
     }
 }

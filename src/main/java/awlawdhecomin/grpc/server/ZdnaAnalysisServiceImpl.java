@@ -1,8 +1,8 @@
 package awlawdhecomin.grpc.server;
 
-import awlawdhecomin.analyse.shared.data.ZdnaAnalyseResult;
-import awlawdhecomin.analyse.shared.data.ZdnaAnalysisInputDto;
-import awlawdhecomin.analyse.zdna.ZdnaAnalyser;
+import awlawdhecomin.zdna.ZdnaAnalyser;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisInputDto;
+import awlawdhecomin.zdna.dto.ZdnaAnalysisResultDto;
 import com.google.protobuf.Int64Value;
 import cz.mendelu.dnaAnalyser.grpc.analysis.ZdnaAnalysisInput;
 import cz.mendelu.dnaAnalyser.grpc.analysis.ZdnaAnalysisResponse;
@@ -40,22 +40,20 @@ public class ZdnaAnalysisServiceImpl implements ZdnaAnalysisService {
         return Uni.createFrom().item(response);
     }
 
-    private ZdnaAnalysisResult toZdnaAnalysisResult(ZdnaAnalyseResult zdnaAnalyseResult) {
+    private ZdnaAnalysisResult toZdnaAnalysisResult(ZdnaAnalysisResultDto zdnaAnalysisResultDto) {
         ZdnaAnalysisResult.Builder builder = ZdnaAnalysisResult.newBuilder()
-                .setPosition(zdnaAnalyseResult.getPosition())
-                .setLength(zdnaAnalyseResult.getLength())
-                .setSequence(zdnaAnalyseResult.getSequence())
-                .setZdnaGCRichness(zdnaAnalyseResult.getZdnaGCRichness())
-                .setZdnaGTRichness(zdnaAnalyseResult.getZdnaGTRichness())
-                .setScore(zdnaAnalyseResult.getScore())
-                .setScorePerc(zdnaAnalyseResult.getScorePerc());
+                .setPosition(zdnaAnalysisResultDto.getPosition())
+                .setLength(zdnaAnalysisResultDto.getLength())
+                .setSequence(zdnaAnalysisResultDto.getSequence())
+                .setZdnaGCRichness(zdnaAnalysisResultDto.getZdnaGCRichness())
+                .setZdnaGTRichness(zdnaAnalysisResultDto.getZdnaGTRichness())
+                .setScore(zdnaAnalysisResultDto.getScore())
+                .setScorePerc(zdnaAnalysisResultDto.getScorePerc());
 
-        Long id = zdnaAnalyseResult.getId();
+        Long id = zdnaAnalysisResultDto.getId();
         if (id != null) {
             builder.setId(Int64Value.of(id));
         }
-
-
 
         return builder.build();
     }

@@ -1,4 +1,4 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.zdna.dto;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.common.sequence.nucleotide;
 
 import java.nio.ByteBuffer;
 import java.nio.InvalidMarkException;
@@ -8,6 +8,12 @@ import java.nio.InvalidMarkException;
  */
 public class NucleotideBuffer {
 
+    private final ByteBuffer buffer;
+
+    public NucleotideBuffer(ByteBuffer buffer) {
+        this.buffer = buffer;
+    }
+
     public static NucleotideBuffer wrap(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         return wrap(buffer);
@@ -15,12 +21,6 @@ public class NucleotideBuffer {
 
     public static NucleotideBuffer wrap(ByteBuffer buffer) {
         return new NucleotideBuffer(buffer);
-    }
-
-    private final ByteBuffer buffer;
-
-    public NucleotideBuffer(ByteBuffer buffer) {
-        this.buffer = buffer;
     }
 
     /**
@@ -131,7 +131,7 @@ public class NucleotideBuffer {
      * @return This buffer
      */
     public NucleotideBuffer mark() {
-        ByteBuffer result = (ByteBuffer) buffer.mark();
+        ByteBuffer result = buffer.mark();
         return (result == buffer) ? this : wrap(result);
     }
 
@@ -145,7 +145,7 @@ public class NucleotideBuffer {
      * @throws InvalidMarkException If the mark has not been set
      */
     public NucleotideBuffer reset() {
-        ByteBuffer result = (ByteBuffer) buffer.reset();
+        ByteBuffer result = buffer.reset();
         return (result == buffer) ? this : wrap(result);
     }
 
@@ -169,7 +169,7 @@ public class NucleotideBuffer {
      * @return This buffer
      */
     public NucleotideBuffer clear() {
-        ByteBuffer result = (ByteBuffer) buffer.clear();
+        ByteBuffer result = buffer.clear();
         return (result == buffer) ? this : wrap(result);
     }
 
@@ -197,7 +197,7 @@ public class NucleotideBuffer {
      * @return This buffer
      */
     public NucleotideBuffer flip() {
-        ByteBuffer result = (ByteBuffer) buffer.flip();
+        ByteBuffer result = buffer.flip();
         return (result == buffer) ? this : wrap(result);
     }
 
@@ -219,7 +219,7 @@ public class NucleotideBuffer {
      * @return This buffer
      */
     public NucleotideBuffer rewind() {
-        ByteBuffer result = (ByteBuffer) buffer.rewind();
+        ByteBuffer result = buffer.rewind();
         return (result == buffer) ? this : wrap(result);
     }
 
@@ -241,7 +241,7 @@ public class NucleotideBuffer {
      * Tells whether there are any elements between the current position and
      * the limit.
      *
-     * @return <tt>true</tt> if, and only if, there is at least one element
+     * @return {@code true} if, and only if, there is at least one element
      * remaining in this buffer
      */
     public boolean hasRemaining() {

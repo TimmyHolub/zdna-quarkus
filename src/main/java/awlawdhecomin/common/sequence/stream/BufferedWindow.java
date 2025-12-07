@@ -1,6 +1,8 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.common.sequence.stream;
 
-import lombok.extern.slf4j.Slf4j;
+import awlawdhecomin.common.sequence.nucleotide.Nucleotide;
+import awlawdhecomin.common.sequence.nucleotide.NucleotideBuffer;
+import awlawdhecomin.common.sequence.stream.exception.WindowStreamException;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -12,7 +14,6 @@ import java.util.function.ToDoubleBiFunction;
 import java.util.stream.DoubleStream;
 import java.util.stream.StreamSupport;
 
-@Slf4j
 public class BufferedWindow implements Window {
 
     private final NucleotideBuffer buffer;

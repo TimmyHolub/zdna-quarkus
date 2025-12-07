@@ -1,4 +1,4 @@
-package awlawdhecomin.analyse.shared.data;
+package awlawdhecomin.common.sequence.stream.exception;
 
 public class WindowStreamException extends RuntimeException {
 
